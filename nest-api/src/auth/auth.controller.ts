@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
+import { AuthDto } from 'src/dto/auth.dto';
 import { AuthService } from './auth.service';
 
 @Controller('api/auth/')
@@ -11,14 +12,14 @@ export class AuthController {
     } // shortcode constructor (private authService: Authservice) {}
 
     @Post('signin')
-    signIn (@Req() req: Request) {
-        return this.authService.signIn(req);
+    signIn (@Body() data: AuthDto) {
+        return this.authService.signIn(data);
     }
 
     @Post('signup')
-    signUp (@Req() req: Request):string {
+    signUp (@Body() data: AuthDto): string {
 
-        return this.authService.signUp(req);
+        return this.authService.signUp(data);
     }
 
 }

@@ -1,4 +1,10 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, ValidationPipe } from "@nestjs/common";
+
 
 @Injectable()
-export class AuthDto {}
+export class AuthDto {
+
+    email: string;
+
+
+}
