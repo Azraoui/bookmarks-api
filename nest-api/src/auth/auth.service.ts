@@ -4,4 +4,11 @@ import { Injectable } from '@nestjs/common';
 
 export class AuthService {
     
+    signIn () {
+        return "user Sign In to the website"
+    }
+    
+    signUp () {
+        return "user Sign Up to the website"
+    }
 }
