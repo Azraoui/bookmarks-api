@@ -1,4 +1,4 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 @Controller('api/auth/')
@@ -11,13 +11,14 @@ export class AuthController {
     } // shortcode constructor (private authService: Authservice) {}
 
     @Post('signin')
-    signIn ():string {
-        return this.authService.signIn();
+    signIn (@Req() req: Request) {
+        return this.authService.signIn(req);
     }
 
     @Post('signup')
-    signUp ():string {
-        return this.authService.signUp();
+    signUp (@Req() req: Request):string {
+
+        return this.authService.signUp(req);
     }
 
 }
