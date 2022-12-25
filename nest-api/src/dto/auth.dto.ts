@@ -1,10 +1,14 @@
-import { Injectable, ValidationPipe } from "@nestjs/common";
+import { IsEmail,
+        IsNotEmpty,
+        IsStrongPassword } from "class-validator";
 
-
-@Injectable()
 export class AuthDto {
 
+    @IsEmail()
+    @IsNotEmpty()
     email: string;
 
-
+    @IsStrongPassword()
+    @IsNotEmpty()
+    password: string
 }
