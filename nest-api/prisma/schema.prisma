@@ -18,11 +18,15 @@ model User {
   updateAt DateTime @updatedAt
 
   email String @unique
-  hash String @unique
+  hash String
+  bio String?
 
   firstName String?
   lastName String?
 
+  @@unique([email, id])
+
+  bookmarks Bookmark[]
 }
 
 model Bookmark {
@@ -35,4 +39,9 @@ model Bookmark {
   title String
   description String?
   link String
+
+  // belong to User
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+
 }

@@ -5,6 +5,7 @@ CREATE TABLE "User" (
     "updateAt" TIMESTAMP(3) NOT NULL,
     "email" TEXT NOT NULL,
     "hash" TEXT NOT NULL,
+    "bio" TEXT,
     "firstName" TEXT,
     "lastName" TEXT,
 
@@ -19,6 +20,16 @@ CREATE TABLE "Bookmark" (
     "title" TEXT NOT NULL,
     "description" TEXT,
     "link" TEXT NOT NULL,
+    "userId" INTEGER NOT NULL,
 
     CONSTRAINT "Bookmark_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_id_key" ON "User"("email", "id");
+
+-- AddForeignKey
+ALTER TABLE "Bookmark" ADD CONSTRAINT "Bookmark_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
