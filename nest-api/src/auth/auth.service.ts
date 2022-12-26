@@ -2,9 +2,9 @@ import { ForbiddenException, Injectable, Req } from '@nestjs/common';
 import { AuthDto } from 'src/dto/auth.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as argon from 'argon2'
-import { User } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 
 @Injectable()
@@ -12,9 +12,9 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthService {
     
     constructor ( private prisma: PrismaService,
-                  private jwt: JwtService, ) {}
+                  private jwt: JwtService, private config: ConfigService) {}
 
-    async signUp (data: AuthDto): Promise<User> {
+    async signUp (data: AuthDto) {
         
         // Generate The Password hash
         try {
@@ -29,8 +29,7 @@ export class AuthService {
             })
     
             // return the saved user
-            delete user.hash
-            return user
+            return this.signToken(user.id, user.email);
         }
         catch (error)
         {
@@ -45,7 +44,7 @@ export class AuthService {
         }
     }
     
-    async signIn (data: AuthDto): Promise<User> {
+    async signIn (data: AuthDto) {
         
         // find the user by email
         const user = await this.prisma.user.findUnique({
@@ -73,12 +72,28 @@ export class AuthService {
             );
         }
 
-        delete user.hash
         // send back the user
-        return user
+        return this.signToken(user.id, user.email);
     }
 
+    // signToken with jwt
     async signToken (userId: number, email: string) {
-        
+
+        // seting payloud for jwt
+        const payloud = {
+            sub: userId,
+            email
+        }
+
+        const secret = this.config.get('JWT_SECRET');
+        const expiredTime = this.config.get('JWT_EXPIRED_TIME');
+        // return jwt signAsync promise
+        const token = await this.jwt.signAsync(payloud, {
+            expiresIn: '15m',
+            secret: secret
+        })
+        return {
+            access_token: token,
+        }
     }
 }

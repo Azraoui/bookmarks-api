@@ -1,5 +1,4 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { User } from '@prisma/client';
 import { AuthDto } from 'src/dto';
 import { AuthService } from './auth.service';
 
@@ -13,12 +12,12 @@ export class AuthController {
     } // shortcode constructor (private authService: Authservice) {}
 
     @Post('signin')
-    signIn (@Body() data: AuthDto): Promise<User> {
+    signIn (@Body() data: AuthDto) {
         return this.authService.signIn(data);
     }
 
     @Post('signup')
-    signUp (@Body() data: AuthDto): Promise<User> {
+    signUp (@Body() data: AuthDto) {
 
         return this.authService.signUp(data);
     }
