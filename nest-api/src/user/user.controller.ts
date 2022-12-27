@@ -9,8 +9,7 @@ import { GaurdService } from 'src/auth/guards';
 export class UserController {
 
     @Get('me')
-    getMe(@GetUser() user: User, @GetUser('email') eml: string) {
-        console.log(eml);
+    getMe(@GetUser() user: User) {
         return user;
     }
 
